@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>সহজ লোন সেবা</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #00a651;
+    --green-dark: #007a3d;
+    --green-light: #e6f7ef;
+    --gold: #f5a623;
+    --text: #1a2e1a;
+    --white: #ffffff;
+    --gray: #f4f6f4;
+    --shadow: 0 4px 24px rgba(0,0,0,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Hind Siliguri', sans-serif;
+    background: var(--gray);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+    color: #fff;
+    padding: 0;
+    box-shadow: 0 2px 12px rgba(0,166,81,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .logo span { color: var(--gold); }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex;
+    gap: 6px;
+  }
+  .nav-tab {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 24px;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .nav-tab.active, .nav-tab:hover {
+    background: var(--gold);
+    color: var(--text);
+  }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 16px;
+  }
+
+  /* PAGE 1 - LOAN TABLE */
+  .page-title {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .page-title h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+  }
+  .page-title p {
+    color: #555;
+    font-size: 1rem;
+  }
+
+  .loan-table-wrap {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead {
+    background: linear-gradient(135deg, var(--green-dark), var(--green));
+    color: #fff;
+  }
+  thead th {
+    padding: 16px 20px;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  tbody tr {
+    border-bottom: 1px solid #e8f5ee;
+    transition: background 0.15s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--green-light); }
+  tbody tr.highlight { background: #fff8e8; }
+  td {
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 1rem;
+  }
+  td:first-child { font-weight: 600; color: var(--green-dark); }
+  td:nth-child(2) { color: #e05; font-weight: 600; }
+  td:nth-child(3) { color: #555; }
+
+  .badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .apply-btn-wrap {
+    text-align: center;
+    margin-top: 28px;
+  }
+  .btn-main {
+    background: linear-gradient(135deg, var(--green-dark), var(--green));
+    color: #fff;
+    border: none;
+    padding: 14px 44px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Hind Siliguri', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,166,81,0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,166,81,0.35);
+  }
+
+  /* PAGE 2 - APPLICATION FORM */
+  .form-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 36px 32px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .form-card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 7px;
+    color: var(--text);
+    font-size: 0.97rem;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #d0e8d8;
+    border-radius: 10px;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    background: #f9fdf9;
+    transition: border 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(0,166,81,0.12);
+    background: #fff;
+  }
+  .loan-preview {
+    background: var(--green-light);
+    border: 1.5px solid #b2dfc6;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 18px 0;
+    text-align: center;
+    display: none;
+  }
+  .loan-preview.show { display: block; }
+  .loan-preview .preview-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--green-dark);
+  }
+  .loan-preview .preview-label {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 4px;
+  }
+  .loan-preview .preview-deposit {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #e05;
+    margin-top: 8px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--green-dark), var(--green));
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Hind Siliguri', sans-serif;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: opacity 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.9; }
+
+  .success-msg {
+    display: none;
+    background: var(--green-light);
+    border: 2px solid var(--green);
+    border-radius: 14px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .success-msg.show { display: block; }
+  .success-msg h3 { color: var(--green-dark); font-size: 1.3rem; margin-bottom: 10px; }
+  .success-msg p { color: #444; }
+
+  /* PAGE 3 - PAYMENT */
+  .payment-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 36px 32px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .payment-card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .payment-card .subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+  }
+
+  .deposit-info {
+    background: linear-gradient(135deg, #fff8e8, #fffdf0);
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .deposit-info .amount-label { font-size: 0.9rem; color: #888; }
+  .deposit-info .amount-value { font-size: 2rem; font-weight: 700; color: var(--green-dark); }
+  .deposit-info .note { font-size: 0.85rem; color: #e05; margin-top: 6px; font-weight: 500; }
+
+  .payment-methods h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .method-card {
+    border: 2px solid #e0ece5;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: border 0.2s, box-shadow 0.2s;
+  }
+  .method-card:hover { border-color: var(--green); box-shadow: 0 2px 12px rgba(0,166,81,0.1); }
+  .method-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .bkash-logo { background: #e2136e; color: #fff; }
+  .nagad-logo { background: #f7941d; color: #fff; font-size: 1rem; }
+
+
+  .method-info { flex: 1; }
+  .method-name { font-weight: 700; font-size: 1rem; margin-bottom: 2px; }
+  .method-number { font-size: 1.1rem; color: var(--green-dark); font-weight: 600; letter-spacing: 0.5px; }
+  .method-type { font-size: 0.8rem; color: #888; }
+
+  .copy-btn {
+    background: var(--green-light);
+    border: 1.5px solid var(--green);
+    color: var(--green-dark);
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .copy-btn:hover { background: var(--green); color: #fff; }
+
+  .payment-note {
+    background: #fff3f3;
+    border-left: 4px solid #e05;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    margin-top: 20px;
+    font-size: 0.93rem;
+    color: #c03;
+    font-weight: 500;
+  }
+
+  /* TRANSACTION SECTION */
+  .trx-section {
+    margin-top: 28px;
+    background: var(--green-light);
+    border: 2px solid #b2dfc6;
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .trx-section h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .trx-form-group {
+    margin-bottom: 14px;
+  }
+  .trx-form-group label {
+    font-weight: 600;
+    font-size: 0.93rem;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .trx-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #b2dfc6;
+    border-radius: 10px;
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    background: #fff;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+  }
+  .trx-input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(0,166,81,0.12);
+  }
+  .trx-submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--green-dark), var(--green));
+    color: #fff;
+    border: none;
+    padding: 13px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Hind Siliguri', sans-serif;
+    cursor: pointer;
+    margin-top: 4px;
+    transition: opacity 0.2s, transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .trx-submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .trx-success {
+    display: none;
+    background: #fff;
+    border: 2px solid var(--green);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 12px;
+  }
+  .trx-success.show { display: block; }
+  .trx-success .check-icon {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
+  .trx-success h4 {
+    color: var(--green-dark);
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+  .trx-success p {
+    color: #555;
+    font-size: 0.9rem;
+  }
+  .trx-id-display {
+    background: var(--green-light);
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header-inner { flex-direction: column; gap: 10px; }
+    .form-card, .payment-card { padding: 24px 16px; }
+    thead th, td { padding: 10px 10px; font-size: 0.88rem; }
+    .logo { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">সহজ <span>লোন</span> সেবা</div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage(1)">💰 লোনের তালিকা</button>
+      <button class="nav-tab" onclick="showPage(2)">📋 আবেদন করুন</button>
+      <button class="nav-tab" onclick="showPage(3)">📲 পেমেন্ট</button>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE 1: LOAN TABLE -->
+<div class="page active" id="page1">
+  <div class="container">
+    <div class="page-title">
+      <h2>💰 লোনের পরিমাণ ও জমা</h2>
+      <p>নিচের তালিকা দেখে আপনার প্রয়োজনীয় লোন বেছে নিন</p>
+    </div>
+
+    <div class="loan-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>লোনের পরিমাণ</th>
+            <th>আগাম জমা</th>
+            <th>মোট পরিশোধ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>৫০০ টাকা</td>
+            <td>১০০ টাকা</td>
+            <td>৫০০ টাকা</td>
+          </tr>
+          <tr>
+            <td>১,০০০ টাকা</td>
+            <td>২০০ টাকা</td>
+            <td>১,০০০ টাকা</td>
+          </tr>
+          <tr>
+            <td>২,০০০ টাকা</td>
+            <td>৪০০ টাকা</td>
+            <td>২,০০০ টাকা</td>
+          </tr>
+          <tr>
+            <td>৩,০০০ টাকা</td>
+            <td>৪৫০ টাকা</td>
+            <td>৩,০০০ টাকা</td>
+          </tr>
+          <tr>
+            <td>৪,০০০ টাকা</td>
+            <td>৫০০ টাকা</td>
+            <td>৪,০০০ টাকা</td>
+          </tr>
+          <tr>
+            <td>৫,০০০ টাকা</td>
+            <td>৭০০ টাকা</td>
+            <td>৫,০০০ টাকা</td>
+          </tr>
+          <tr>
+            <td>১০,০০০ টাকা</td>
+            <td>১,২০০ টাকা</td>
+            <td>১০,০০০ টাকা</td>
+          </tr>
+          <tr>
+            <td>২০,০০০ টাকা</td>
+            <td>১,৫০০ টাকা</td>
+            <td>২০,০০০ টাকা</td>
+          </tr>
+          <tr>
+            <td>৩০,০০০ টাকা</td>
+            <td>২,০০০ টাকা</td>
+            <td>৩০,০০০ টাকা</td>
+          </tr>
+          <tr>
+            <td>৫০,০০০ টাকা</td>
+            <td>২,৫০০ টাকা</td>
+            <td>৫০,০০০ টাকা</td>
+          </tr>
+          <tr class="highlight">
+            <td>১,০০,০০০ টাকা <span class="badge">সর্বোচ্চ</span></td>
+            <td>৫,০০০ টাকা</td>
+            <td>১,০০,০০০ টাকা</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="apply-btn-wrap">
+      <button class="btn-main" onclick="showPage(2)">এখনই আবেদন করুন →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: APPLICATION FORM -->
+<div class="page" id="page2">
+  <div class="container">
+    <div class="form-card">
+      <h2>📋 লোনের আবেদন</h2>
+
+      <div id="appForm">
+        <div class="form-group">
+          <label>আপনার নাম</label>
+          <input type="text" id="name" placeholder="পূর্ণ নাম লিখুন">
+        </div>
+        <div class="form-group">
+          <label>মোবাইল নম্বর</label>
+          <input type="tel" id="phone" placeholder="০১XXXXXXXXX">
+        </div>
+        <div class="form-group">
+          <label>কত টাকা লোন নিতে চান?</label>
+          <select id="loanAmount" onchange="updatePreview()">
+            <option value="">-- পরিমাণ বেছে নিন --</option>
+            <option value="500|100">৫০০ টাকা</option>
+            <option value="1000|200">১,০০০ টাকা</option>
+            <option value="2000|400">২,০০০ টাকা</option>
+            <option value="3000|450">৩,০০০ টাকা</option>
+            <option value="4000|500">৪,০০০ টাকা</option>
+            <option value="5000|700">৫,০০০ টাকা</option>
+            <option value="10000|1200">১০,০০০ টাকা</option>
+            <option value="20000|1500">২০,০০০ টাকা</option>
+            <option value="30000|2000">৩০,০০০ টাকা</option>
+            <option value="50000|2500">৫০,০০০ টাকা</option>
+            <option value="100000|5000">১,০০,০০০ টাকা</option>
+          </select>
+        </div>
+
+        <div class="loan-preview" id="loanPreview">
+          <div class="preview-label">আপনি নিচ্ছেন</div>
+          <div class="preview-amount" id="previewLoan"></div>
+          <div class="preview-deposit" id="previewDeposit"></div>
+        </div>
+
+        <div class="form-group">
+          <label>ঠিকানা</label>
+          <textarea id="address" rows="2" placeholder="আপনার ঠিকানা লিখুন"></textarea>
+        </div>
+        <div class="form-group">
+          <label>পেমেন্ট পদ্ধতি</label>
+          <select id="payMethod">
+            <option value="">-- বেছে নিন --</option>
+            <option>বিকাশ</option>
+            <option>নগদ</option>
+
+          </select>
+        </div>
+
+        <button class="submit-btn" onclick="submitForm()">আবেদন জমা দিন ✓</button>
+      </div>
+
+      <div class="success-msg" id="successMsg">
+        <h3>✅ আবেদন সফলভাবে জমা হয়েছে!</h3>
+        <p>আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।<br>এখন জমার পেমেন্ট করুন।</p>
+        <br>
+        <button class="btn-main" onclick="showPage(3)">পেমেন্ট করুন →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: PAYMENT -->
+<div class="page" id="page3">
+  <div class="container">
+    <div class="payment-card">
+      <h2>📲 আগাম জমা পাঠান</h2>
+      <p class="subtitle">লোন পাওয়ার আগে নিচের যেকোনো নম্বরে জমার টাকা পাঠান</p>
+
+      <div class="deposit-info">
+        <div class="amount-label">৫০০ টাকা লোনের জন্য জমা দিতে হবে</div>
+        <div class="amount-value">১০০ টাকা</div>
+        <div class="note">⚠️ জমা না দিলে লোন প্রদান করা হবে না</div>
+      </div>
+
+      <div class="payment-methods">
+        <h3>পেমেন্ট করুন এখানে:</h3>
+
+        <div class="method-card">
+          <div class="method-logo bkash-logo">bK</div>
+          <div class="method-info">
+            <div class="method-name">বিকাশ</div>
+            <div class="method-number" id="bkashNum">01858958057</div>
+            <div class="method-type">সেন্ড মানি</div>
+          </div>
+          <button class="copy-btn" onclick="copyNum('bkashNum')">কপি</button>
+        </div>
+
+        <div class="method-card">
+          <div class="method-logo nagad-logo">নগদ</div>
+          <div class="method-info">
+            <div class="method-name">নগদ</div>
+            <div class="method-number" id="nagadNum">01777860923</div>
+            <div class="method-type">সেন্ড মানি</div>
+          </div>
+          <button class="copy-btn" onclick="copyNum('nagadNum')">কপি</button>
+        </div>
+
+
+      </div>
+
+      <div class="payment-note">
+        ⚠️ টাকা পাঠানোর পর ট্রানজেকশন নম্বর (TrxID) সংরক্ষণ করুন এবং নিচে জমা দিন।
+      </div>
+
+      <!-- TRANSACTION ID SUBMISSION SECTION -->
+      <div class="trx-section">
+        <h3>🧾 ট্রানজেকশন আইডি জমা দিন</h3>
+
+        <div id="trxForm">
+          <div class="trx-form-group">
+            <label>ট্রানজেকশন আইডি (TrxID)</label>
+            <input type="text" class="trx-input" id="trxId" placeholder="যেমন: 8AB12CD345">
+          </div>
+
+          <button class="trx-submit-btn" onclick="submitTrx()">
+            ✅ ট্রানজেকশন জমা দিন
+          </button>
+        </div>
+
+        <div class="trx-success" id="trxSuccess">
+          <div class="check-icon">✅</div>
+          <h4>ট্রানজেকশন সফলভাবে জমা হয়েছে!</h4>
+          <p>আপনার ট্রানজেকশন আইডি:</p>
+          <div class="trx-id-display" id="confirmedTrxId"></div>
+          <p style="margin-top:10px; font-size:0.88rem; color:#555;">আমরা যাচাই করার পর আপনার লোন পাঠিয়ে দেব।</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPage(num) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('page' + num).classList.add('active');
+    document.querySelectorAll('.nav-tab')[num - 1].classList.add('active');
+  }
+
+  function updatePreview() {
+    const val = document.getElementById('loanAmount').value;
+    const preview = document.getElementById('loanPreview');
+    if (!val) { preview.classList.remove('show'); return; }
+    const [loan, deposit] = val.split('|');
+    document.getElementById('previewLoan').textContent = formatBDT(loan) + ' টাকা';
+    document.getElementById('previewDeposit').textContent = '⚠️ আগাম জমা: ' + formatBDT(deposit) + ' টাকা';
+    preview.classList.add('show');
+  }
+
+  function formatBDT(num) {
+    return parseInt(num).toLocaleString('bn-BD');
+  }
+
+  function submitForm() {
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const loan = document.getElementById('loanAmount').value;
+    const method = document.getElementById('payMethod').value;
+    if (!name || !phone || !loan || !method) {
+      alert('অনুগ্রহ করে সব তথ্য পূরণ করুন।');
+      return;
+    }
+    document.getElementById('appForm').style.display = 'none';
+    document.getElementById('successMsg').classList.add('show');
+  }
+
+  function copyNum(id) {
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      alert('নম্বর কপি হয়েছে: ' + text);
+    });
+  }
+
+  function submitTrx() {
+    const trxId = document.getElementById('trxId').value.trim();
+
+    if (!trxId) {
+      alert('অনুগ্রহ করে ট্রানজেকশন আইডি লিখুন।');
+      return;
+    }
+
+    document.getElementById('confirmedTrxId').textContent = trxId;
+    document.getElementById('trxForm').style.display = 'none';
+    document.getElementById('trxSuccess').classList.add('show');
+  }
+</script>
+</body>
+</html>
